@@ -1,9 +1,13 @@
 package claim
 
-import "github.com/dgrijalva/jwt-go"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"github.com/emicklei/go-restful"
+)
 
 const (
-	RequesterUserID = "requesterUserId"
+	RequesterUserID     = "requesterUserId"
+	CurrentSessionClaim = "currentSessionClaim"
 )
 
 //IdentityClaim model for jwt claim
@@ -14,4 +18,12 @@ type IdentityClaim struct {
 	UserType    string         `json:"user_type,omitempty"`
 	Permissions map[string]int `json:"permissions"`
 	jwt.StandardClaims
+}
+
+func ParseClaimAttribute(req *restful.Request) *IdentityClaim {
+	rawClaim := req.Attribute(CurrentSessionClaim)
+	if claim, ok := rawClaim.(*IdentityClaim); ok {
+		return claim
+	}
+	return nil
 }

@@ -123,6 +123,7 @@ func (auth *AuthFilter) Auth(requiredPermission string, requiredAction int) rest
 		}
 
 		req.SetAttribute(claim.RequesterUserID, claimObj.UserID)
+		req.SetAttribute(claim.CurrentSessionClaim, claimObj)
 
 		chain.ProcessFilter(req, resp)
 	}
